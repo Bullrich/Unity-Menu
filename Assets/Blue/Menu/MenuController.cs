@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 // By @Bullrich
 namespace Blue.Menu
@@ -10,11 +11,12 @@ namespace Blue.Menu
     {
         public string DefaultMailDirectory = "example@gmail.com";
 
-        [Header("Do not touch below this point")] public GridLayoutGroup buttons;
+        [Header("Do not touch below this point")] public VerticalLayoutGroup buttons;
         public Text debugger;
         public Button buttonPrefab;
 
-        private string _messageTitle, _messageBody;
+        private readonly List<LogContainer> logs = new List<LogContainer>();
+        private int logIndex = 0;
 
         private static MenuController _instance;
 
@@ -60,17 +62,9 @@ namespace Blue.Menu
             button.transform.SetParent(buttons.transform);
         }
 
-        private void ShowLog(string log)
+        private void ShowLog(LogContainer log)
         {
-            debugger.text = log;
-        }
-
-        public void SendEmail()
-        {
-            string email = DefaultMailDirectory;
-            string subject = MyEscapeURL(_messageTitle);
-            string body = MyEscapeURL(_messageBody);
-            Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+            debugger.text = log.getLog();
         }
 
         private static string MyEscapeURL(string url)
@@ -80,14 +74,60 @@ namespace Blue.Menu
 
         private void HandleLog(string logString, string stackTrace, LogType type)
         {
-            _messageTitle = logString;
-            _messageBody = string.Format("{0}\n{1}", logString, stackTrace);
-            string color = "#000000ff";
-            if (type == LogType.Warning)
-                color = "#ffa500ff";
-            else if (type == LogType.Error)
-                color = "#ff0000ff";
-            ShowLog(string.Format("<b><color={0}>{1}</color></b>\n{2}", color, logString, stackTrace));
+            LogContainer log = new LogContainer(logString, stackTrace, type);
+            logs.Add(log);
+            logIndex = logs.Count - 1;
+            ShowLog(log);
+        }
+
+        public void SendEmail()
+        {
+            string email = DefaultMailDirectory;
+            string subject = MyEscapeURL(logs[logIndex].title);
+            string body = MyEscapeURL(logs[logIndex].message);
+            Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+        }
+
+        public void GoUp()
+        {
+            ShowLog(logs[--logIndex]);
+        }
+
+        public void GoDown()
+        {
+            ShowLog(logs[++logIndex]);
+        }
+
+        private class LogContainer
+        {
+            public readonly string
+                title, message;
+            public readonly string color;
+
+            public LogContainer(string title, string message, LogType type = LogType.Log)
+            {
+                this.title = title;
+                this.message = message;
+                switch (type)
+                {
+                    case LogType.Log:
+                        color = "#000000ff";
+                        break;
+                    case LogType.Error:
+                    case LogType.Exception:
+                        color = "#ff0000";
+                        break;
+                    case LogType.Warning:
+                        color = "#ffa500ff";
+                        break;
+                }
+                Debug.Log(color);
+            }
+
+            public string getLog()
+            {
+                return string.Format("<b><color={0}>{1}</color></b>\n{2}", color, title, message);
+            }
         }
     }
 }

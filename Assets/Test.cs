@@ -10,17 +10,24 @@ namespace game
 	{
 		private void Start()
 		{
-			Blue.Menu.MenuController.AddButton(MenuTest, "Test!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Test!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Test!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Test!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Test!");
+			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
+			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
+			Blue.Menu.MenuController.AddButton(Error, "Error!");
+			
 		}
 
 
 		private void MenuTest()
 		{
-			Debug.Log("Hello!");
+			Debug.Log("Log!");
+		}
+
+		private void Warning(){
+			Debug.LogWarning("Warning!");
+		}
+
+		private void Error(){
+			Debug.LogError("Error!");
 		}
 	}
 }
