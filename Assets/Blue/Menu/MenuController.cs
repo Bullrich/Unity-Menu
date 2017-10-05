@@ -12,7 +12,7 @@ namespace Blue.Menu
         public string DefaultMailDirectory = "example@gmail.com";
 
         [Header("Do not touch below this point")] public VerticalLayoutGroup buttons;
-        public Text debugger;
+        public Text debugger, logCounter;
         public Button buttonPrefab;
 
         private readonly List<LogContainer> logs = new List<LogContainer>();
@@ -60,11 +60,20 @@ namespace Blue.Menu
             button.onClick.AddListener(method.Invoke);
             button.GetComponentInChildren<Text>().text = buttonName;
             button.transform.SetParent(buttons.transform);
+            button.transform.localScale = Vector3.one;
         }
 
-        private void ShowLog(LogContainer log)
+        private void ShowLog(LogContainer log, int currentLog)
         {
             debugger.text = log.getLog();
+            logCounter.text = string.Format("{0}/{1}", currentLog + 1, logs.Count);
+        }
+
+        public void PrintMessage(LogContainer log)
+        {
+            logs.Add(log);
+            logIndex = logs.Count - 1;
+            ShowLog(log, logIndex);
         }
 
         private static string MyEscapeURL(string url)
@@ -75,9 +84,7 @@ namespace Blue.Menu
         private void HandleLog(string logString, string stackTrace, LogType type)
         {
             LogContainer log = new LogContainer(logString, stackTrace, type);
-            logs.Add(log);
-            logIndex = logs.Count - 1;
-            ShowLog(log);
+            PrintMessage(log);
         }
 
         public void SendEmail()
@@ -90,15 +97,25 @@ namespace Blue.Menu
 
         public void GoUp()
         {
-            ShowLog(logs[--logIndex]);
+            Go(-1);
+        }
+
+        private void Go(int direction)
+        {
+            logIndex += direction;
+            if (logIndex >= logs.Count)
+                logIndex = 0;
+            else if (logIndex < 0)
+                logIndex = logs.Count - 1;
+            ShowLog(logs[logIndex], logIndex);
         }
 
         public void GoDown()
         {
-            ShowLog(logs[++logIndex]);
+           Go(1);
         }
 
-        private class LogContainer
+        public class LogContainer
         {
             public readonly string
                 title, message;
@@ -126,7 +143,12 @@ namespace Blue.Menu
 
             public string getLog()
             {
-                return string.Format("<b><color={0}>{1}</color></b>\n{2}", color, title, message);
+                return LimitLength(string.Format("<b><color={0}>{1}</color></b>\n{2}", color, title, message), 340);
+            }
+
+            private string LimitLength(string s, int l)
+            {
+                return s.Substring(0, s.Length > l ? l : s.Length);
             }
         }
     }

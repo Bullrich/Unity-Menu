@@ -91,7 +91,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &169202703
+--- !u!1001 &78878750
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -187,41 +187,6 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114843552790092542, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_CellSize.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 114843552790092542, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_CellSize.y
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 114330279749010224, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_ReferenceResolution.x
-      value: 800
-      objectReference: {fileID: 0}
-    - target: {fileID: 114330279749010224, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_ReferenceResolution.y
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 224867967004651500, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: -265
-      objectReference: {fileID: 0}
-    - target: {fileID: 224867967004651500, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224867967004651500, guid: 765cf417bdeee4c2d9a831ea752ddf3a,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 800
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 765cf417bdeee4c2d9a831ea752ddf3a, type: 2}
@@ -374,4 +339,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1452677624
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1452677626}
+  - component: {fileID: 1452677625}
+  m_Layer: 0
+  m_Name: Testo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1452677625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1452677624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491ba24bf032e498ea801ebd5dc2f682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1452677626
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1452677624}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 360, y: 640, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
