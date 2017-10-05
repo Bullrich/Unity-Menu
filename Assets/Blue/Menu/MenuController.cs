@@ -3,10 +3,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Net;
 
 // By @Bullrich
 namespace Blue.Menu
 {
+    [HelpURL("https://github.com/Bullrich/Unity-Menu/blob/master/README.md")]
     public class MenuController : MonoBehaviour
     {
         public string DefaultMailDirectory = "example@gmail.com";
@@ -15,7 +17,7 @@ namespace Blue.Menu
         public Text debugger, logCounter;
         public Button buttonPrefab;
 
-        private readonly List<LogContainer> logs = new List<LogContainer>();
+        private readonly List<LogContainer> _logs = new List<LogContainer>();
         private int logIndex = 0;
 
         private static MenuController _instance;
@@ -28,30 +30,20 @@ namespace Blue.Menu
 
         private void Start()
         {
-            Debug.Log("Unity Menu!\nMade by @Bullrich");
+            PrintMessage("Unity Menu!", "Up and running!");
             if (!Debug.isDebugBuild)
                 Debug.LogWarning("This isn't a development build! You won't be able to read the stack trace!");
 
-            const string _eventSystemName = "EventSystem";
-            GameObject eventSystem = GameObject.Find(_eventSystemName);
+            const string eventSystemName = "EventSystem";
+            GameObject eventSystem = GameObject.Find(eventSystemName);
 
             if (eventSystem == null)
             {
-                GameObject _eventSystem = new GameObject(_eventSystemName);
+                GameObject _eventSystem = new GameObject(eventSystemName);
                 _eventSystem.AddComponent<EventSystem>();
                 _eventSystem.AddComponent<StandaloneInputModule>();
                 _eventSystem.transform.position = Vector3.zero;
             }
-        }
-
-        /// <summary>Add a button to the menu.</summary>
-        /// <param name="method">A void method</param>
-        /// <param name="buttonName">The name of the button</param>
-        public static void AddButton(Action method, string buttonName)
-        {
-            if (_instance == null)
-                throw new Exception("Menu prefab does not exist on the scene or is being called before it's awake.");
-            _instance.CreateButton(method, buttonName);
         }
 
         public void CreateButton(Action method, string buttonName)
@@ -65,14 +57,14 @@ namespace Blue.Menu
 
         private void ShowLog(LogContainer log, int currentLog)
         {
-            debugger.text = log.getLog();
-            logCounter.text = string.Format("{0}/{1}", currentLog + 1, logs.Count);
+            debugger.text = log.GetLog();
+            logCounter.text = string.Format("{0}/{1}", currentLog + 1, _logs.Count);
         }
 
-        public void PrintMessage(LogContainer log)
+        private void PrintMessage(LogContainer log)
         {
-            logs.Add(log);
-            logIndex = logs.Count - 1;
+            _logs.Add(log);
+            logIndex = _logs.Count - 1;
             ShowLog(log, logIndex);
         }
 
@@ -87,11 +79,35 @@ namespace Blue.Menu
             PrintMessage(log);
         }
 
+        private void Go(int direction)
+        {
+            logIndex += direction;
+            if (logIndex >= _logs.Count)
+                logIndex = 0;
+            else if (logIndex < 0)
+                logIndex = _logs.Count - 1;
+            ShowLog(_logs[logIndex], logIndex);
+        }
+
+        private void ClearConsoleLogs()
+        {
+            _logs.Clear();
+            PrintMessage("Console clear!", "");
+        }
+
+
+        #region Buttons
+
+        public void GoDown()
+        {
+            Go(1);
+        }
+
         public void SendEmail()
         {
             string email = DefaultMailDirectory;
-            string subject = MyEscapeURL(logs[logIndex].title);
-            string body = MyEscapeURL(logs[logIndex].message);
+            string subject = MyEscapeURL(_logs[logIndex].title);
+            string body = MyEscapeURL(_logs[logIndex].message);
             Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
         }
 
@@ -100,50 +116,86 @@ namespace Blue.Menu
             Go(-1);
         }
 
-        private void Go(int direction)
+        #endregion
+
+        #region static methods
+
+        private static MenuController GetInstance()
         {
-            logIndex += direction;
-            if (logIndex >= logs.Count)
-                logIndex = 0;
-            else if (logIndex < 0)
-                logIndex = logs.Count - 1;
-            ShowLog(logs[logIndex], logIndex);
+            if (_instance == null)
+                throw new Exception("Menu prefab does not exist on the scene or is being called before it's awake.");
+            return _instance;
         }
 
-        public void GoDown()
+        /// <summary>Add a button to the menu.</summary>
+        /// <param name="method">A void method</param>
+        /// <param name="buttonName">The name of the button</param>
+        public static void AddButton(Action method, string buttonName)
         {
-           Go(1);
+            if (string.IsNullOrEmpty(buttonName))
+                throw new Exception("Button name can not be null or empty!");
+            GetInstance().CreateButton(method, buttonName);
         }
 
-        public class LogContainer
+        /// <summary>Sends a message directly to the console.</summary>
+        /// <param name="title">Header of the message</param>
+        /// <param name="message">Body of the message</param>
+        public static void PrintMessage(string title, string message)
+        {
+            GetInstance().PrintMessage(new LogContainer(title, message));
+        }
+
+        /// <summary>Clear all the logs from memory.</summary>
+        public static void ClearLogs()
+        {
+            GetInstance().ClearConsoleLogs();
+        }
+
+        #endregion
+
+        private class LogContainer
         {
             public readonly string
                 title, message;
-            public readonly string color;
+
+            private readonly string _color;
+            private const string NULL = "<color=\"#ff00ffff\"><b>NULL</b></color>";
+
+            private string CheckIfNullOrEmpty(string s)
+            {
+                const string nullString = "Null";
+                const string EMPTY = "<color=\"#800080ff\"><b>EMPTY</b></color>";
+
+                if (s == null || string.Equals(s, nullString))
+                    return NULL;
+                else if (s.Length == 0)
+                    return EMPTY;
+                return s;
+            }
 
             public LogContainer(string title, string message, LogType type = LogType.Log)
             {
-                this.title = title;
-                this.message = message;
+                this.title = CheckIfNullOrEmpty(title);
+                this.message = message ?? NULL;
                 switch (type)
                 {
                     case LogType.Log:
-                        color = "#000000ff";
+                        _color = "#000000ff";
                         break;
                     case LogType.Error:
                     case LogType.Exception:
-                        color = "#ff0000";
+                        _color = "#ff0000";
                         break;
                     case LogType.Warning:
-                        color = "#ffa500ff";
+                        _color = "#ffa500ff";
                         break;
                 }
-                Debug.Log(color);
             }
 
-            public string getLog()
+            public string GetLog()
             {
-                return LimitLength(string.Format("<b><color={0}>{1}</color></b>\n{2}", color, title, message), 340);
+                return LimitLength(string.Format("<b><color={0}>{1}</color></b>{2}", _color, title,
+                    (message.Length > 0 ? "\n" : "") + message), 340);
             }
 
             private string LimitLength(string s, int l)

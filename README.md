@@ -2,8 +2,6 @@
 
 A simple unity menu to test functions
 
-![Menu](menu.png)
-
 ## Instructions
 
 To use this menu first drag the prefab **Menu** to the scene(which is inside the folder *Blue/Menu*).
@@ -17,7 +15,7 @@ Blue.Menu.MenuController.AddButton(Action, string);
 
 Action is a void method with no parameters, and string is the description of the button.
 
-Be aware that the console has a screen that will show the last logged message.
+The console has a screen that shows the logs and allow the user to navigate through them.
 
 An example of how to use this would be the following:
 ```csharp
@@ -31,4 +29,8 @@ private void Start(){
 }
 ```
 
-You can share your log through email pressing the message log screen.
+You can also force the menu to show a message using
+```csharp
+Blue.Menu.MenuController.PrintMessage("This is the title", "Here goes the body");
+```
+
