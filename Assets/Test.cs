@@ -13,30 +13,7 @@ namespace game
 			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
 			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
 			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
-			Blue.Menu.MenuController.AddButton(MenuTest, "Log!");
-			Blue.Menu.MenuController.AddButton(Warning, "Warning!");
-			Blue.Menu.MenuController.AddButton(Error, "Error!");
+			Blue.Menu.MenuController.AddButton(SendMessage, "Send custom message");
 			
 		}
 
@@ -44,6 +21,11 @@ namespace game
 		private void MenuTest()
 		{
 			Debug.Log("Log!");
+		}
+
+		private void SendMessage()
+		{
+			Blue.Menu.MenuController.PrintMessage("Custom message", "Here I sent a custom message!");
 		}
 
 		private void Warning(){
