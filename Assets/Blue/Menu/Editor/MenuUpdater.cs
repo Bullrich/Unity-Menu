@@ -1,4 +1,4 @@
-﻿using Blue.Updater.Editor;
+﻿using Blue.Updater;
 using UnityEditor;
 
 // by @Bullrich

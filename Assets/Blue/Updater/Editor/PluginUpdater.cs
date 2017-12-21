@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Blue.Updater.Editor
+namespace Blue.Updater
 {
     public abstract class PluginUpdater
     {
