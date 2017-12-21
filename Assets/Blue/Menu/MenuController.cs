@@ -52,6 +52,7 @@ namespace Blue.Menu
             button.onClick.AddListener(method.Invoke);
             button.GetComponentInChildren<Text>().text = buttonName;
             button.transform.SetParent(buttons.transform);
+            button.gameObject.name = buttonName;
             button.transform.localScale = Vector3.one;
         }
 

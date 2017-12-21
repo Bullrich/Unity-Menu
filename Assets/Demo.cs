@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace game
 {
-    public class Test : MonoBehaviour
+    public class Demo : MonoBehaviour
     {
         private void Start()
         {
