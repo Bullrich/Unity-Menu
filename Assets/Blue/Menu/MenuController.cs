@@ -65,8 +65,12 @@ namespace Blue.Menu
         private void PrintMessage(LogContainer log)
         {
             _logs.Add(log);
-            logIndex = _logs.Count - 1;
-            ShowLog(log, logIndex);
+            if (logIndex == _logs.Count - 2)
+            {
+                logIndex = _logs.Count - 1;
+                ShowLog(log, logIndex);
+            }
+            logCounter.text = string.Format("{0}/{1}", logIndex + 1, _logs.Count);
         }
 
         private static string MyEscapeURL(string url)
@@ -144,6 +148,13 @@ namespace Blue.Menu
         public static void PrintMessage(string title, string message)
         {
             GetInstance().PrintMessage(new LogContainer(title, message));
+        }
+        
+        /// <summary>Sends a message directly to the console.</summary>
+        /// <param name="title">Header of the message</param>
+        public static void PrintMessage(string title)
+        {
+            GetInstance().PrintMessage(new LogContainer(title, String.Empty));
         }
 
         /// <summary>Clear all the logs from memory.</summary>
