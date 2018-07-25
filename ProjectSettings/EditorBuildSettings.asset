@@ -8,6 +8,3 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/demo.unity
     guid: d7985cdc658af4c52b51059f58948084
-  - enabled: 1
-    path: Assets/Blue/Menu/menu.unity
-    guid: 00000000000000000000000000000000

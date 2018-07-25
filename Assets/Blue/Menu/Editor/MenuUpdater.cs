@@ -10,12 +10,12 @@ namespace Blue.Menu.Updater
         private const string
             USERNAME = "Bullrich",
             REPONAME = "Unity-Menu",
-            CUREENT_VERSION = "0.3";
+            CURRENT_VERSION = "0.4";
 
         [MenuItem("Window/Blue/Menu/Search for updates")]
         public static void SearchUpdate()
         {
-            SearchForUpdate(CUREENT_VERSION, USERNAME, REPONAME);
+            SearchForUpdate(CURRENT_VERSION, USERNAME, REPONAME);
         }
     }
 }
